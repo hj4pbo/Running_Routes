@@ -249,10 +249,10 @@ def PrintDirections(start):
 PrintDirections("10155 Old Columbia Rd, Columbia, MD 21046")
 
 # Create our properties, contenttypes, and other support files
-title    = 'Python docx demo'
-subject  = 'A practical example of making docx from Python'
-creator  = 'Mike MacCana'
-keywords = ['python', 'Office Open XML', 'Word']
+title    = 'Running Routes'
+subject  = 'Written directions for various incident addresses'
+creator  = ''
+keywords = []
 
 coreprops = coreproperties(title=title, subject=subject, creator=creator,
                          keywords=keywords)
