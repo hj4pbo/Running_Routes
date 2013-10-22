@@ -19,6 +19,7 @@ import sys
 import webbrowser
 from docx import *
 
+# docx required stuff - maybe make into function along with stuff at bottom
 # Default set of relationshipships - the minimum components of a document
 relationships = relationshiplist()
 
@@ -138,10 +139,6 @@ def PrintDirections(start):
      Description    : This function prints directions to file
      """
 
-     """
-     To Do:    read csv, find route, create table
-     """
-
      # Print logo
      print """______                  _              ______            _             
 | ___ \                (_)             | ___ \          | |            
@@ -165,16 +162,18 @@ def PrintDirections(start):
      # Set starting point
      origin = start
 
-     # Prompt
+     # Prompt - comment when using sublime since it throws a shit fit when asked for input
 #     raw_input()
      print "Starting at", origin
 
      # Open input file
      with open("Address File.csv", "rb") as f:
+         
          fi = open("Address File.csv")
          lines = len(fi.readlines())
          fi.close()
 
+         # File and program info
          print "Calculating", lines, "running routes"
          print "Saving to", output_file, "\n"
 
@@ -187,15 +186,11 @@ def PrintDirections(start):
          # Counter for percentage complete
          i = 0
 
+         # Table for docx
          tbl_rows = [['Incident', 'Address','Box','Map','Directions']]
          
          # For every line in the CSV file, find the address and get directions
-         for row in reader:
-              
-              
-
-              # Add state, print debug info
-              #print "Original Address: ", row[1]
+         for row in reader:         
 
               # Increment counter
               i += 1
@@ -208,15 +203,11 @@ def PrintDirections(start):
               result         = GetJson(origin, destination)
               Directions     = ParseSteps(result)
               fo.write(destination + "\n")              
-              #print "Processed Address: ", destination
-
+              
+              # Create docx table
               row[1] = destination
               row.append(Directions)
               tbl_rows.append(row)
-
-              #print Directions
-
-
 
               # Print directions to file
               for steps in Directions:
@@ -227,7 +218,6 @@ def PrintDirections(start):
                
               # Percent complete
               percent = i*(100/float(lines))
-              #print percent
 
               percent_tick = (float(1)/toolbar_width)*100
               tick = int(percent/percent_tick)
@@ -238,9 +228,14 @@ def PrintDirections(start):
 
               # Sleep for half a second to let API catch up     
               time.sleep(0.5)
+
+         # Append docx table to document body
          body.append(table(tbl_rows))
+
      # Close output file
      fo.close()
+
+     # Prompt - comment when using sublime since it throws a shit fit when asked for input 
 #     raw_input("\n\nProcess complete. Press any key to exit...")
      webbrowser.open(output_file)
 
@@ -248,6 +243,7 @@ def PrintDirections(start):
 
 PrintDirections("10155 Old Columbia Rd, Columbia, MD 21046")
 
+# docx required stuff - maybe make into function along with stuff at bottom
 # Create our properties, contenttypes, and other support files
 title    = 'Running Routes'
 subject  = 'Written directions for various incident addresses'
